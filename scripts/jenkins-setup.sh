@@ -4,8 +4,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 JENKINS_DIR="$DIR/../jenkins"
 
 log () {
-  echo "[$1] $2" >> /var/log/jenkins-setup.log
+  echo "[$1] $2" >> $HOME/jenkins-setup.log
 }
+
+log "INFO" "Creating jenkins home directory..."
+mkdir $HOME/jenkins
 
 log "INFO" "Building jenkins image..."
 
