@@ -22,8 +22,11 @@ else
   log "INFO" "Image built and available. $( sudo docker ps -qa )"
 fi
 
+log "INFO" "Moving env variables from ~/jenkins > ~/mlops-repo/jenkins/jenkins.env"
+mv ~/jenkins.env $JENKINS_DIR
+
 log "INFO" "Standing up jenkins service..."
-sudo docker-compose --env-file ~/jenkins.env up -d
+sudo docker-compose up -d
 
 if [ $? -ne 0 ]; then
   log "ERROR" "Failure while spinning up jenkins service"
