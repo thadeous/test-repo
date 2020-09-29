@@ -7,9 +7,6 @@ log () {
   echo "[$1] $2" >> $HOME/jenkins-setup.log
 }
 
-log "INFO" "Creating jenkins home directory..."
-mkdir $HOME/jenkins
-
 log "INFO" "Building jenkins image..."
 
 cd $JENKINS_DIR
@@ -22,8 +19,10 @@ else
   log "INFO" "Image built and available. $( sudo docker ps -qa )"
 fi
 
-log "INFO" "Moving env variables from ~/jenkins > ~/mlops-repo/jenkins/jenkins.env"
-mv ~/jenkins.env $JENKINS_DIR
+if [ -f ~/jenkins.env ]; then
+  log "INFO" "Moving env variables from ~/jenkins > ~/mlops-repo/jenkins/jenkins.env"
+  mv ~/jenkins.env $JENKINS_DIR
+fi
 
 log "INFO" "Standing up jenkins service..."
 sudo docker-compose up -d
