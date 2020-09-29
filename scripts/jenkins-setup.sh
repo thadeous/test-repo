@@ -23,7 +23,7 @@ else
 fi
 
 log "INFO" "Standing up jenkins service..."
-sudo docker stack deploy -c jenkins.yml jenkins -e DOCKER_CMD=$( which docker )
+docker-compose up
 
 if [ $? -ne 0 ]; then
   log "ERROR" "Failure while spinning up jenkins service"

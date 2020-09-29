@@ -1,20 +1,20 @@
 #!groovy
-
 import jenkins.model.*
 import hudson.security.*
-import jenkins.security.s2m.AdminWhitelistRule
 
-def instance = Jenkins.getInstance()
+def env = System.getenv()
 
-def user = new File("/run/secrets/jenkins-user").text.trim()
-def pass = new File("/run/secrets/jenkins-pass").text.trim()
+def jenkins = Jenkins.getInstance()
+if(!(jenkins.getSecurityRealm() instanceof HudsonPrivateSecurityRealm))
+    jenkins.setSecurityRealm(new HudsonPrivateSecurityRealm(false))
 
-def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-hudsonRealm.createAccount(user, pass)
-instance.setSecurityRealm(hudsonRealm)
+if(!(jenkins.getAuthorizationStrategy() instanceof GlobalMatrixAuthorizationStrategy))
+    jenkins.setAuthorizationStrategy(new GlobalMatrixAuthorizationStrategy())
 
-def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
-instance.setAuthorizationStrategy(strategy)
-instance.save()
+// create new Jenkins user account
+// username & password from environment variables
+def user = jenkins.getSecurityRealm().createAccount(env.JENKINS_USER, env.JENKINS_PASS)
+user.save()
+jenkins.getAuthorizationStrategy().add(Jenkins.ADMINISTER, env.JENKINS_USER)
 
-Jenkins.instance.getInjector().getInstance(AdminWhitelistRule.class).setMasterKillSwitch(false)
+jenkins.save()
