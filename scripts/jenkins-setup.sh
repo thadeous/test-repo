@@ -23,7 +23,7 @@ else
 fi
 
 log "INFO" "Standing up jenkins service..."
-docker-compose up
+DOCKER_CMD=$( which docker ) sudo docker-compose up
 
 if [ $? -ne 0 ]; then
   log "ERROR" "Failure while spinning up jenkins service"
