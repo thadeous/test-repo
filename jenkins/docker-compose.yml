@@ -15,7 +15,7 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DOCKER_CMD}:/usr/local/bin/docker
+      - /snap/bin/docker:/usr/local/bin/docker
 
 volumes:
   jenkins-data:
