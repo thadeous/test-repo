@@ -23,7 +23,7 @@ else
 fi
 
 log "INFO" "Standing up jenkins service..."
-sudo docker-compose up
+sudo docker-compose --env-file ~/jenkins.env up -d
 
 if [ $? -ne 0 ]; then
   log "ERROR" "Failure while spinning up jenkins service"

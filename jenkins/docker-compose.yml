@@ -5,17 +5,17 @@ services:
   jenkins:
     image: bah-jenkins
     container_name: jenkins
+    env_file:
+      - jenkins.env
     privileged: true
     user: root
-    env_file:
-      - ${HOME}/jenkins-vars.env
     ports:
       - 8080:8080
       - 50000:50000
     volumes:
       - jenkins-data:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
-      - /snap/bin/docker:/usr/local/bin/docker
+      - /usr/bin/docker:/usr/local/bin/docker
 
 volumes:
   jenkins-data:
