@@ -17,5 +17,14 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/local/bin/docker
 
+  pypi:
+    image: pypiserver/pypiserver:latest
+    command: -P .htpasswd packages
+    ports:
+      - 8081:8080
+    volumes:
+      - .htpasswd:/data/.htpasswd
+
+
 volumes:
   jenkins-data:
